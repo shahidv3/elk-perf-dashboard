@@ -1,0 +1,91 @@
+{"type":"dashboard","attributes":{"title":"OK Cluster - Microservices Performance","description":"Performance Testing Dashboard - Java Microservices","timeRestore":false,"optionsJSON":"{\"useMargins\":true,\"syncColors\":false,\"syncCursor\":true,\"syncTooltips\":true}","panelsJSON":"[
+  {
+    \"type\":\"lens\",
+    \"title\":\"P95 Latency (ms)\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"processor.event : \\\"transaction\\\"\"},
+    \"dataView\":\"apm-*\",
+    \"metrics\":[
+      {
+        \"type\":\"percentile\",
+        \"field\":\"transaction.duration.us\",
+        \"percentile\":95,
+        \"script\":\"value / 1000\"
+      }
+    ],
+    \"breakdown\":\"service.name\"
+  },
+  {
+    \"type\":\"lens\",
+    \"title\":\"P99 Latency (ms)\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"processor.event : \\\"transaction\\\"\"},
+    \"dataView\":\"apm-*\",
+    \"metrics\":[
+      {
+        \"type\":\"percentile\",
+        \"field\":\"transaction.duration.us\",
+        \"percentile\":99,
+        \"script\":\"value / 1000\"
+      }
+    ],
+    \"breakdown\":\"service.name\"
+  },
+  {
+    \"type\":\"lens\",
+    \"title\":\"Error Rate (%)\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"processor.event : \\\"transaction\\\"\"},
+    \"dataView\":\"apm-*\",
+    \"formula\":\"count(kql='event.outcome : \\\"failure\\\"') / count() * 100\",
+    \"breakdown\":\"service.name\"
+  },
+  {
+    \"type\":\"lens\",
+    \"title\":\"Requests Per Second\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"processor.event : \\\"transaction\\\"\"},
+    \"dataView\":\"apm-*\",
+    \"formula\":\"count() / 60\",
+    \"breakdown\":\"service.name\"
+  },
+  {
+    \"type\":\"lens\",
+    \"title\":\"Top Slowest Endpoints (P99)\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"processor.event : \\\"transaction\\\"\"},
+    \"dataView\":\"apm-*\",
+    \"metrics\":[
+      {
+        \"type\":\"percentile\",
+        \"field\":\"transaction.duration.us\",
+        \"percentile\":99,
+        \"script\":\"value / 1000\"
+      }
+    ],
+    \"breakdown\":\"transaction.name\",
+    \"sort\":\"desc\"
+  },
+  {
+    \"type\":\"lens\",
+    \"title\":\"JVM Heap Used (MB)\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"metricset.name : \\\"jvm\\\"\"},
+    \"dataView\":\"metrics-apm.internal*\",
+    \"metrics\":[
+      {
+        \"type\":\"average\",
+        \"field\":\"jvm.memory.heap.used\",
+        \"script\":\"value / 1048576\"
+      }
+    ],
+    \"breakdown\":\"service.name\"
+  },
+  {
+    \"type\":\"lens\",
+    \"title\":\"Kubernetes Pod CPU Usage\",
+    \"query\":{\"language\":\"kuery\",\"query\":\"kubernetes.pod.name:*\"},
+    \"dataView\":\"metrics-kubernetes*\",
+    \"metrics\":[
+      {
+        \"type\":\"average\",
+        \"field\":\"kubernetes.pod.cpu.usage.node.pct\"
+      }
+    ],
+    \"breakdown\":\"kubernetes.pod.name\"
+  }
+]","version":1},"references":[]}
